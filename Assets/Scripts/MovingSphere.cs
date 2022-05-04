@@ -16,6 +16,9 @@ public class MovingSphere : MonoBehaviour
     [SerializeField, Range(0, 5)]
     int maxAirJumps = 0;
 
+    [SerializeField]
+    Transform playerInputSpace = default;
+
     Rigidbody body;
 
     bool desiredJump;
@@ -41,7 +44,21 @@ public class MovingSphere : MonoBehaviour
         playerInput.x = Input.GetAxis("Horizontal");
         playerInput.z = Input.GetAxis("Vertical");
         playerInput = Vector3.ClampMagnitude(playerInput, 1f);
-        desiredVelocity = new Vector3(playerInput.x, playerInput.y, playerInput.z) * maxSpeed; //期望速度
+
+        if (playerInputSpace)
+        {
+            Vector3 forward = playerInputSpace.forward;
+            forward.y = 0f;
+            forward.Normalize();
+            Vector3 right = playerInputSpace.right;
+            right.y = 0f;
+            right.Normalize();
+            desiredVelocity = (playerInput.x * right + playerInput.y * Vector3.up + playerInput.z * forward) * maxSpeed;
+        }
+        else
+        {
+            desiredVelocity = new Vector3(playerInput.x, playerInput.y, playerInput.z) * maxSpeed; //期望速度
+        }        
 
         desiredJump |= Input.GetButtonDown("Jump");
     }

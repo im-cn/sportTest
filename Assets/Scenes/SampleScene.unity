@@ -802,14 +802,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a8916048a994484c9ebb5092419851e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foucs: {fileID: 1700813193}
+  focus: {fileID: 1700813193}
   distance: 5
   focusRadius: 1
   focusCentering: 0.5
   rotationSpeed: 90
-  minVerticalAngle: -14.8
-  maxVerticalAngle: 16
+  minVerticalAngle: 16
+  maxVerticalAngle: 89
   alignDelay: 5
+  alignSmoothRange: 11.6
 --- !u!20 &193874505
 Camera:
   m_ObjectHideFlags: 0
@@ -833,9 +834,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.03
   far clip plane: 1000
-  field of view: 60
+  field of view: 74.6
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -3910,6 +3911,7 @@ MonoBehaviour:
   maxAirAcceleration: 1
   jumpHeight: 2
   maxAirJumps: 0
+  playerInputSpace: {fileID: 193874506}
 --- !u!54 &1700813196
 Rigidbody:
   m_ObjectHideFlags: 0

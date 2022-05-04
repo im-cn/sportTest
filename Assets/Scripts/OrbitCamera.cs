@@ -34,8 +34,21 @@ public class OrbitCamera : MonoBehaviour
     float alignSmoothRange = 45f;
 
     float lastManualRotationTime;
+
+    Camera regularCamera;
+
+    Vector3 CameraHalfExtends {
+        get {
+            Vector3 halfExtends;
+            halfExtends.y = regularCamera.nearClipPlane * Mathf.Tan(0.5f * Mathf.Deg2Rad * regularCamera.fieldOfView);
+            halfExtends.x = halfExtends.y * regularCamera.aspect;
+            halfExtends.z = 0f;
+            return halfExtends;
+        }
+    }
     void Awake()
     {
+        regularCamera = GetComponent<Camera>();
         focusPoint = focus.position;
         transform.localRotation = Quaternion.Euler(orbitAngles);
     }
@@ -66,6 +79,16 @@ public class OrbitCamera : MonoBehaviour
         }
         Vector3 lookDirection = lookRotation * Vector3.forward;        
         Vector3 lookPosition = focusPoint - lookDirection * distance;
+
+        if(Physics.BoxCast(focusPoint, CameraHalfExtends, -lookDirection, out RaycastHit hit, lookRotation, distance - regularCamera.nearClipPlane))
+        {
+            lookPosition = focusPoint - lookDirection * (hit.distance + regularCamera.nearClipPlane);
+        }
+        //if(Physics.Raycast(focusPoint, -lookDirection, out RaycastHit hit, distance))
+        //{
+        //    lookPosition = focusPoint - lookDirection * hit.distance;
+        //}
+
         transform.SetPositionAndRotation(lookPosition, lookRotation);        
     }
 
